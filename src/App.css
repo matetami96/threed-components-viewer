@@ -1,12 +1,20 @@
+.app-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100vh;
+}
+
 .button-container {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
 
-.button-container button {
+.toggle-button {
 	padding: 10px;
 	font-size: 16px;
 	border-radius: 5px;
@@ -16,18 +24,6 @@
 	cursor: pointer;
 }
 
-.button-container button:hover {
+.toggle-button:hover {
 	background-color: #0069d9;
-}
-
-.models-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	gap: 20px;
-	padding: 20px;
-
-	/* display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	gap: 20px; */
 }
