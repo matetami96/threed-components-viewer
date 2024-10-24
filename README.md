@@ -1,6 +1,9 @@
 # 3D Rendering Example
 
-Clone the repository
-cd into the directory
-run npm install
-run npm run dev
+1. clone the repository
+
+2. cd into the directory
+
+3. run npm install to install dependencies
+
+4. run npm run dev to start the app
