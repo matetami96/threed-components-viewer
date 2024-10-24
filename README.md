@@ -4,6 +4,6 @@
 
 2. cd into the directory
 
-3. run npm install to install dependencies
+3. run ```npm install to install``` dependencies
 
-4. run npm run dev to start the app
+4. run ```npm run dev -- --host ``` to start the app and expose host for mobile
