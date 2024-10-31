@@ -1,18 +1,32 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import "./App.css";
 import Model from "./components/Model";
 import { enterFullscreen } from "./utils/utils";
-import { fullModel, securopeLifelineModels } from "./data/securope-lifeline-models";
+// import { securopeLifelineModels } from "./data/securope-lifeline-models";
 import Spinner from "./components/Spinner";
 
 const App = () => {
-	const [showSingleModel, setShowSingleModel] = useState(true);
+	const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+	const [loadedModels] = useState(loaded3DModels);
+
+	useEffect(() => {
+		window.addEventListener("resize", () => {
+			setIsMobile(window.innerWidth <= 768);
+		});
+
+		return () => {
+			window.removeEventListener("resize", () => {
+				setIsMobile(window.innerWidth <= 768);
+			});
+		};
+	}, []);
 
 	const renderModels = () => {
-		return securopeLifelineModels.map((model, index) => (
+		// return securopeLifelineModels.map((model, index) => (
+		return loadedModels.map((model, index) => (
 			<Model
 				key={index}
 				url={model.url}
@@ -26,24 +40,24 @@ const App = () => {
 
 	return (
 		<div className="app-container">
-			<div className="button-container">
-				<button
-					className="toggle-button"
-					onClick={() => {
-						setShowSingleModel((prevState) => !prevState);
-						enterFullscreen();
-					}}
-				>
-					{showSingleModel ? "Hide Full Model" : "Show Full Model"}
-				</button>
-				<p>{showSingleModel ? "Single imported model" : "Made from multiple 3D models"}</p>
-			</div>
+			{isMobile && (
+				<div className="button-container">
+					<button
+						className="toggle-button"
+						onClick={() => {
+							enterFullscreen();
+						}}
+					>
+						{"Toggle Fullscreen"}
+					</button>
+				</div>
+			)}
 			<Canvas camera={{ position: [0, 0, 250] }} onTouchMove={(e) => e.stopPropagation()}>
 				<ambientLight intensity={0.5} />
 				<pointLight position={[10, 10, 10]} intensity={1} />
 				<directionalLight position={[-2, 5, 2]} intensity={1} />
 				<Suspense fallback={<Spinner />}>
-					{showSingleModel ? <Model url={fullModel.url} position={fullModel.position} /> : renderModels()}
+					{renderModels()}
 					<OrbitControls />
 				</Suspense>
 			</Canvas>

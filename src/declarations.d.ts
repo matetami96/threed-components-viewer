@@ -13,3 +13,12 @@ declare module "three/examples/jsm/loaders/STLLoader" {
 		parse(data: ArrayBuffer | string): BufferGeometry;
 	}
 }
+
+declare const loaded3DModels: {
+	name: string;
+	url: string;
+	position: [number, number, number];
+	scale?: [number, number, number];
+	rotation?: [number, number, number];
+	color?: string;
+}[];
