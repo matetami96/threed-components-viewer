@@ -7,10 +7,10 @@ export default defineConfig({
 	build: {
 		rollupOptions: {
 			output: {
-				entryFileNames: "component-viewer.js",
+				entryFileNames: "model-viewer.js",
 				assetFileNames: (assetInfo) => {
 					if (assetInfo.name && assetInfo.name.endsWith(".css")) {
-						return "component-viewer.css";
+						return "model-viewer.css";
 					}
 					// Default asset naming for other assets
 					return "assets/[name].[hash][extname]";
