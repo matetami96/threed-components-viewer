@@ -7,12 +7,11 @@ export default defineConfig({
 	build: {
 		rollupOptions: {
 			output: {
-				entryFileNames: "model-viewer.js",
+				entryFileNames: "react-model-viewer.js",
 				assetFileNames: (assetInfo) => {
-					if (assetInfo.name && assetInfo.name.endsWith(".css")) {
-						return "model-viewer.css";
+					if (assetInfo.names && assetInfo.names.some((name) => name.endsWith(".css"))) {
+						return "react-model-viewer.css";
 					}
-					// Default asset naming for other assets
 					return "assets/[name].[hash][extname]";
 				},
 			},
