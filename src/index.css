@@ -17,4 +17,56 @@ body {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#model-viewer {
+	width: 1200px;
+	height: 800px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* Large desktops */
+@media screen and (max-width: 1200px) {
+	#model-viewer {
+		width: 1000px;
+		height: 700px;
+	}
+}
+
+/* Tablets and small laptops */
+@media screen and (max-width: 992px) {
+	#model-viewer {
+		width: 750px;
+		height: 500px;
+	}
+}
+
+/* Large smartphones */
+@media screen and (max-width: 768px) {
+	#model-viewer {
+		width: 600px;
+		height: 400px;
+	}
+}
+
+/* Medium smartphones */
+@media screen and (max-width: 576px) {
+	#model-viewer {
+		width: 400px;
+		height: 300px;
+	}
+}
+
+/* Small smartphones */
+@media screen and (max-width: 400px) {
+	#model-viewer {
+		width: 300px;
+		height: 200px;
+	}
 }
