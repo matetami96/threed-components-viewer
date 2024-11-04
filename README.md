@@ -1,4 +1,4 @@
-# 3D Rendering Example
+# 3D System Rendering with React Three Fiber
 
 1. clone the repository
 
