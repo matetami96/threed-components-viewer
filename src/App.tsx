@@ -5,7 +5,6 @@ import { Suspense, useEffect, useState } from "react";
 import "./App.css";
 import Model from "./components/Model";
 import { enterFullscreen } from "./utils/utils";
-// import { securopeLifelineModels } from "./data/securope-lifeline-models";
 import Spinner from "./components/Spinner";
 
 const App = () => {
@@ -25,7 +24,6 @@ const App = () => {
 	}, []);
 
 	const renderModels = () => {
-		// return securopeLifelineModels.map((model, index) => (
 		return loadedModels.map((model, index) => (
 			<Model
 				key={index}
