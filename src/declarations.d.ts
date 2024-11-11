@@ -7,18 +7,25 @@ declare module "three/examples/jsm/loaders/STLLoader" {
 		load(
 			url: string,
 			onLoad: (geometry: BufferGeometry) => void,
-			onProgress?: (event: ProgressEvent) => void,
+			onProgress: (event: ProgressEvent) => void,
 			onError?: (event: ErrorEvent) => void
 		): void;
 		parse(data: ArrayBuffer | string): BufferGeometry;
 	}
 }
 
-declare const loaded3DModels: {
+declare const apiBaseUrl: string;
+
+declare const threed_files: {
+	code: string;
+	comp_type: string;
 	name: string;
+	quantity: number;
+	amount: number;
+	discount: string;
+	base_price: number;
+	discounted_price: number;
 	url: string;
-	position: [number, number, number];
-	scale?: [number, number, number];
-	rotation?: [number, number, number];
-	color?: string;
+	"3d_file": string | null;
+	id: number;
 }[];
