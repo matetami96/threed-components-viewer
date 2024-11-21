@@ -29,3 +29,7 @@ declare const threed_files: {
 	"3d_file": string | null;
 	id: number;
 }[];
+
+declare const compsByStep: {
+	[key: string]: unknown;
+};
