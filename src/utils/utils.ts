@@ -20,3 +20,38 @@ export const enterFullscreen = () => {
 		}
 	}
 };
+
+// Function to generate points for a 90-degree curve
+export const createCurvePoints = (
+	start: [number, number, number],
+	radius: number,
+	direction: "up-right" | "down-right" | "up-left" | "down-left"
+) => {
+	const curvePoints: [number, number, number][] = [];
+	const segments = 20; // Number of segments for the curve (smoothness)
+
+	for (let i = 0; i <= segments; i++) {
+		const angle = (Math.PI / 2) * (i / segments); // Angle increment for a 90-degree curve
+		let x = start[0];
+		const y = start[1];
+		let z = start[2];
+
+		if (direction === "up-right") {
+			x = start[0] + radius * (1 - Math.cos(angle));
+			z = start[2] - radius * Math.sin(angle);
+		} else if (direction === "down-right") {
+			x = start[0] + radius * Math.sin(angle);
+			z = start[2] + radius * (1 - Math.cos(angle));
+		} else if (direction === "up-left") {
+			x = start[0] - radius * (1 - Math.cos(angle));
+			z = start[2] - radius * Math.sin(angle);
+		} else if (direction === "down-left") {
+			x = start[0] - radius * Math.sin(angle);
+			z = start[2] + radius * (1 - Math.cos(angle));
+		}
+
+		curvePoints.push([x, y, z]);
+	}
+
+	return curvePoints;
+};

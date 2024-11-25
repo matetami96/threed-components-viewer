@@ -1,3 +1,5 @@
+// import { CompsByStepType } from "./App.types";
+
 declare module "three/examples/jsm/loaders/STLLoader" {
 	import { Loader } from "three";
 	import { BufferGeometry } from "three";
@@ -14,22 +16,22 @@ declare module "three/examples/jsm/loaders/STLLoader" {
 	}
 }
 
-declare const apiBaseUrl: string;
+declare global {
+	const apiBaseUrl: string;
+	const compsByStep: CompsByStepType;
+	const threed_files: {
+		code: string;
+		comp_type: string;
+		name: string;
+		quantity: number;
+		amount: number;
+		discount: string;
+		base_price: number;
+		discounted_price: number;
+		url: string;
+		"3d_file": string | null;
+		id: number;
+	}[];
+}
 
-declare const threed_files: {
-	code: string;
-	comp_type: string;
-	name: string;
-	quantity: number;
-	amount: number;
-	discount: string;
-	base_price: number;
-	discounted_price: number;
-	url: string;
-	"3d_file": string | null;
-	id: number;
-}[];
-
-declare const compsByStep: {
-	[key: string]: unknown;
-};
+export {};
