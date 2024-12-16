@@ -1,3 +1,5 @@
+import { RootState } from "@react-three/fiber";
+
 export type Loaded3DModels = {
 	name: string;
 	url: string;
@@ -68,4 +70,8 @@ export type CompsByStepType = {
 	length_net?: number;
 	length_brut?: number;
 	components: ComponentsType;
+};
+
+export type CanvasWrapperProps = {
+	onReady: (context: RootState) => void;
 };

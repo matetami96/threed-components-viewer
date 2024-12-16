@@ -1,10 +1,10 @@
-import { Canvas /* useThree */ } from "@react-three/fiber";
+import { Canvas, RootState, useThree } from "@react-three/fiber";
 import { Line, OrbitControls } from "@react-three/drei";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import "./App.css";
-import { CompsByStepType, PositionOrRotation } from "./App.types";
+import { CanvasWrapperProps, CompsByStepType, PositionOrRotation } from "./App.types";
 import Model from "./components/Model";
 import { createCurvePoints, enterFullscreen } from "./utils/utils";
 import Spinner from "./components/Spinner";
@@ -514,9 +514,13 @@ const compsByStep: CompsByStepType = {
 	},
 };
 
-const CanvasWrapper = () => {
+const CanvasWrapper = ({ onReady }: CanvasWrapperProps) => {
 	const models: JSX.Element[] = [];
-	// const { viewport } = useThree();
+	const context = useThree();
+
+	useEffect(() => {
+		onReady(context);
+	}, [context, onReady]);
 
 	for (const key in compsByStep.components) {
 		if (compsByStep.components[key][0].subcomponents) {
@@ -594,6 +598,8 @@ const CanvasWrapper = () => {
 const App = () => {
 	const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
+	const threeRef = useRef<Partial<RootState>>({});
+
 	useEffect(() => {
 		window.addEventListener("resize", () => {
 			setIsMobile(window.innerWidth <= 768);
@@ -605,6 +611,27 @@ const App = () => {
 			});
 		};
 	}, []);
+
+	const handleCapture = () => {
+		const { gl, scene, camera } = threeRef.current;
+
+		if (!gl || !scene || !camera) {
+			console.error("Three.js context is not ready");
+			return;
+		}
+
+		// Render the scene
+		gl.render(scene, camera);
+
+		// Capture the image as a data URL
+		const imgDataUrl = gl.domElement.toDataURL("image/png");
+
+		// Trigger download
+		const link = document.createElement("a");
+		link.href = imgDataUrl;
+		link.download = "screenshot.png";
+		link.click();
+	};
 
 	return (
 		<div className="app-container">
@@ -621,23 +648,44 @@ const App = () => {
 				</div>
 			)}
 			{Object.keys(compsByStep.components).length > 0 ? (
-				<Canvas
-					camera={{
-						position: [0, 100, 100],
-						fov: 50,
-						near: 1,
-						far: 10000,
-					}}
-					onTouchMove={(e) => e.stopPropagation()}
-				>
-					<ambientLight intensity={0.5} />
-					<pointLight position={[10, 10, 10]} intensity={1} />
-					<directionalLight position={[-2, 5, 2]} intensity={1} />
-					<Suspense fallback={<Spinner />}>
-						<CanvasWrapper />
-						<OrbitControls />
-					</Suspense>
-				</Canvas>
+				<>
+					<Canvas
+						camera={{
+							position: [0, 100, 80],
+							fov: 50,
+							near: 1,
+							far: 10000,
+						}}
+						onTouchMove={(e) => e.stopPropagation()}
+					>
+						<ambientLight intensity={0.5} />
+						<pointLight position={[10, 10, 10]} intensity={1} />
+						<directionalLight position={[-2, 5, 2]} intensity={1} />
+						<Suspense fallback={<Spinner />}>
+							<CanvasWrapper
+								// make the canvas accessible outside of the canvas
+								onReady={(context) => {
+									threeRef.current = context;
+								}}
+							/>
+							<OrbitControls />
+						</Suspense>
+					</Canvas>
+					<button
+						onClick={handleCapture}
+						style={{
+							marginBottom: "5px",
+							padding: "10px",
+							backgroundColor: "#007BFF",
+							color: "#FFF",
+							border: "none",
+							borderRadius: "5px",
+							cursor: "pointer",
+						}}
+					>
+						Create Screenshot
+					</button>
+				</>
 			) : (
 				<div>No models loaded</div>
 			)}
