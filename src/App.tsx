@@ -1,5 +1,5 @@
-import { Canvas, RootState, useThree } from "@react-three/fiber";
-import { Line, OrbitControls } from "@react-three/drei";
+import { Canvas, RootState, ThreeEvent, useThree } from "@react-three/fiber";
+import { DragControls, Line, OrbitControls, TransformControls } from "@react-three/drei";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -595,8 +595,38 @@ const CanvasWrapper = ({ onReady }: CanvasWrapperProps) => {
 	return models;
 };
 
+const DraggableBox = ({ setDragging }: { setDragging: (isDragging: boolean) => void }) => {
+	const [scale, setScale] = useState<[number, number, number]>([1, 1, 1]);
+
+	const handleWheel = (event: ThreeEvent<WheelEvent>) => {
+		const delta = event.deltaY > 0 ? 0.9 : 1.1;
+		setScale(([x, y, z]) => [x * delta, y * delta, z * delta]);
+	};
+
+	const handlePointerDown = () => setDragging(true);
+	const handlePointerUp = () => setDragging(false);
+
+	return (
+		<TransformControls mode="rotate" onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
+			<DragControls>
+				<mesh
+					position={[10, 0, 0]}
+					scale={scale}
+					onWheel={handleWheel}
+					onPointerDown={handlePointerDown}
+					onPointerUp={handlePointerUp}
+				>
+					<boxGeometry args={[1, 1, 1]} />
+					<meshStandardMaterial color="orange" />
+				</mesh>
+			</DragControls>
+		</TransformControls>
+	);
+};
+
 const App = () => {
 	const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+	const [isDragging, setIsDragging] = useState(false);
 
 	const threeRef = useRef<Partial<RootState>>({});
 
@@ -668,7 +698,8 @@ const App = () => {
 									threeRef.current = context;
 								}}
 							/>
-							<OrbitControls />
+							<DraggableBox setDragging={setIsDragging} />
+							<OrbitControls enabled={!isDragging} />
 						</Suspense>
 					</Canvas>
 					<button

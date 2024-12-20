@@ -33,5 +33,3 @@ declare global {
 		id: number;
 	}[];
 }
-
-export {};
